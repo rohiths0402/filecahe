@@ -148,35 +148,3 @@ file_cache_t* remove_lru_cached_file(file_cache_t *cache) {
     }
     return cache;
 }
-
-file_cache_t* remove_mru_cached_file(file_cache_t *cache){
-    if(!cache) return NULL;
-    cached_file_t *mru = NULL;
-    cached_file_t *mru_prev = NULL;
-    int mru_index = -1;
-    for (int i = 0; i < CACHE_SIZE; i++) {
-        cached_file_t *curr = cache->files[i];
-        cached_file_t *prev = NULL;
-        while (curr) {
-            if (!mru || curr->last_accessed > mru->last_accessed) {
-                mru = curr;
-                mru_prev = prev;
-                mru_index = i;
-            }
-            prev = curr;
-            curr = curr->next;
-        }
-    }
-    if (mru) {
-        if (mru_prev) {
-            mru_prev->next = mru->next;
-        } else {
-            cache->files[mru_index] = mru->next;
-        }
-        release_buffer(cache->buffer_pool, mru->buffer);
-        free(mru);
-        cache->cached_files_count--;
-        printf("Removed MRU cached file\n");
-    }
-    return cache;
-}
