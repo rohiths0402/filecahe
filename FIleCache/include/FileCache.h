@@ -23,7 +23,7 @@ typedef struct file_cache {
 file_cache_t* create_file_cache();
 char* read_file_cached(file_cache_t *cache, const char *filename);
 file_cache_t* remove_cache_file(file_cache_t *cache, const char *filename);
-file_cache_t* remove_cache_file(file_cache_t *cache, const char *filename);
-file_cache_t* remove_mru_cached_file(file_cache_t *cache);
+file_cache_t* remove_lru_cache_file(file_cache_t *cache, const char *filename);
+
 
 #endif
